@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {Animated, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {Animated, Pressable, StyleSheet, Text, View, Image} from 'react-native';
 
 export default Opacity = () => {
-  const [animation, setAnimation] = useState(new Animated.Value(1));
+  const animationRef = useRef(new Animated.Value(1)).current;
 
   const hideBox = () => {
-    Animated.timing(animation, {
+    Animated.timing(animationRef, {
       toValue: 0,
       duration: 1000,
       useNativeDriver: true,
@@ -13,15 +13,25 @@ export default Opacity = () => {
   };
 
   const showBox = () => {
-    Animated.timing(animation, {
+    Animated.timing(animationRef, {
       toValue: 1,
       duration: 1000,
       useNativeDriver: true,
     }).start();
   };
+
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.box, {opacity: animation}]}></Animated.View>
+      <Image
+        source={require('../Assets/Images/programmer.png')}
+        style={StyleSheet.absoluteFill}
+        resizeMode='contain'
+      />
+      <Animated.View
+        style={[
+          styles.box,
+          {transform: [{scaleY: animationRef}]},
+        ]}></Animated.View>
       <Pressable onPress={() => hideBox()}>
         <Text>Hide</Text>
       </Pressable>
